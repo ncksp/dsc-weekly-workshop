@@ -1,0 +1,23 @@
+user klik tombol delete
+
+/delete?id=1
+
+delete from table where id = 1 -> force delete
+
+update table set deleted_at = now() where id = 1 -> softdelete
+
+keuntungan make softdelete?
+- restore
+- ditracking siapa yang ngapus (deleted_by)
+- nampung data yang ga sengaja kebuat (created_by)
+- ngumpulin data
+
+kekurangan make softdelete?
+- query harus di custome semua (select * from users {where deleted_at = null}) -> untuk get datanya
+- kalo memory kecil, gampang penuh
+
+upload foto di inet lalu ngapus -> directory
+
+created
+softdelete
+forcedelete

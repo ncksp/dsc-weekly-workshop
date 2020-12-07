@@ -1,0 +1,81 @@
+distinct = ambil data yang kembar dijadiin 1 aja
+limit = ngebatesin data yang mau di select
+group by = digunain untuk nge group hasil dari selectnya biasanya digunain barengan sama aggregates function
+sum = untuk menjumlahkan multiple row data
+count = untuk menghitung multiple row data
+avg = untuk menghitung rata rata nilai multiple row data
+subquery = melakukan query didalam query yang ada
+alias subquery = melakukan query didalam query yang ada tapi sebagai table
+
+--contoh table
+product_id, qty
+001, 4
+002, 6
+001, 10
+
+--distinct
+select distinct product_id from tr_details
+product_id
+001
+002
+
+--limit
+select * from tr_details limit 1
+001, 4
+
+--group by
+select product_id, sum(qty) as t from tr_details group by product_id
+product_id, t
+001, 14
+002, 6
+
+--subquery
+select product_id, (select ....) as t from tr_details group by product_id
+
+--alias subquery
+select product_id, sum(qty) as t from tr_details, (select ....) as alias_table group by product_id
+
+
+--softdelete
+biasanya itu dipake buat nge flag data ini di delete atau nggak. biasanya cuma ngapus boongan datanya
+
+--tcl
+make untuk query yang berkali kali
+commit => ngesave semua query yang udah di eksekusi
+rollback => kembali ke awal lalu cancel semua query / ke save point 
+savepoint => save point / titik terakhir proses query
+
+skenario: nambahin data transaksi belanja, lalu update stok barang, lalu dapet bonus belanja
+
+START TRANSACTION;
+***QUERY***; -> insert into orders
+***QUERY***; -> insert into orders_details
+SAVEPOINT A;
+***QUERY***; -> update stok barang
+SAVEPOINT B;
+***QUERY***; -> masukin ke table bonus belanja -> gagal (Ada masalah di server)
+SAVEPOINT C;
+COMMIT / ROLLBACK / ROLLBACK TO {SAVEPOINT};
+
+
+--trigger
+melakukan sesuatu saat terjadi event tertentu (insert/update/delete) (before/after)
+
+mau insert data ke table a,b,c.
+cukup insert ke table a
+
+saat delete dia mau insert data ke table penampung
+
+delete from users where id = 1 
+
+untuk ngambil data lama kita make old.{nama_field}
+untuk ngambil data baru kita make new.{nama_field}
+
+--event
+ngejalanin query secara berkala -> cronjob (Ada di cli bukan didatabase)
+kasus: biasanya mau kosongin table a setiap jam 12 malam
+
+--query builder
+melakukan build sql melalui method yang disediakan
+
+
